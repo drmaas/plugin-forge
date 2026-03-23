@@ -169,9 +169,14 @@ copilot plugin install context-engineering@awesome-copilot
 # Claude API and SDK documentation skill
 copilot plugin install claude-api@anthropic-agent-skills
 
-# Document processing suite (Excel, Word, PDF)
+# Document processing suite (Excel, Word, PowerPoint, PDF)
+# Collection of document processing tools including Excel, Word, PowerPoint, and PDF capabilities
 copilot plugin install document-skills@anthropic-agent-skills
-```
+
+# Example skills collection
+# Collection of example skills demonstrating skill creation, MCP building, visual design, algorithmic art, internal communications, web testing, artifact building, Slack GIFs, and theme styling
+copilot plugin install example-skills@anthropic-agent-skills
+``` 
 
 ### 5. Configure MCP servers
 
