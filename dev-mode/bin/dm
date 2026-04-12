@@ -5,13 +5,15 @@
 
 set -euo pipefail
 
-MODES=("og" "tdd" "vibe" "poc" "sdd")
+MODES=("og" "tdd" "vibe" "poc" "sdd" "brainstorm" "oneoff")
 MODE_DESCRIPTIONS=(
   "implement -> verify -> review"
   "tests-first (red/green/refactor)"
   "fast iteration with reduced ceremony"
   "exploratory spike, not production-ready"
   "spec-driven development"
+  "explore ideas without writing code"
+  "directly implement the user's request"
 )
 
 # Resolve data directory: use CLAUDE_PLUGIN_DATA if set, else a sensible default
@@ -25,7 +27,7 @@ usage() {
 Usage:
   dm [--json] status
   dm [--json] list
-  dm [--json] set <og|tdd|vibe|poc|sdd>
+  dm [--json] set <og|tdd|vibe|poc|sdd|brainstorm|oneoff>
   dm help
 
 Examples:

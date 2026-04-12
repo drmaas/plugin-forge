@@ -64,6 +64,8 @@ Use modes only if they are useful for your team:
 - `vibe`: fast iteration with reduced ceremony.
 - `poc`: exploratory spike, not production-ready.
 - `sdd` (spec-driven development): requirements → specification → plan → task execution → review.
+- `brainstorm`: explore ideas, options, and tradeoffs without writing code.
+- `oneoff`: directly implement the requested change with minimal ceremony.
 
 If you use modes, document where mode is configured in your environment.
 

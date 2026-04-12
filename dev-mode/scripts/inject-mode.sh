@@ -38,6 +38,14 @@ case "${mode}" in
 GUIDE
 )"
     desc="implement → verify → review"
+    workflow="$(cat <<'WORK'
+When the user asks you to do implementation work, delegate to the **/dev-mode:builder** subagent — it owns the full execution loop (analyze → select skills → implement → validate → hand off for review). Do not do implementation yourself; let the builder run it.
+
+When implementation is ready for review, the builder will delegate to **/dev-mode:reviewer**, which issues a verdict (Approve / Approve with suggestions / Request changes) and returns control to the builder if changes are needed.
+
+You do not need to invoke these agents manually — use them as subagents when tasks arrive.
+WORK
+)"
     ;;
   tdd)
     guidelines="$(cat <<'GUIDE'
@@ -50,6 +58,12 @@ GUIDE
 GUIDE
 )"
     desc="tests-first (red/green/refactor)"
+    workflow="$(cat <<'WORK'
+When the user asks for implementation, delegate to **/dev-mode:builder**. In this mode the builder writes a failing test first, implements to green, then hands off to **/dev-mode:reviewer**.
+
+You do not need to invoke these agents manually — use them as subagents when tasks arrive.
+WORK
+)"
     ;;
   vibe)
     guidelines="$(cat <<'GUIDE'
@@ -62,6 +76,12 @@ GUIDE
 GUIDE
 )"
     desc="fast iteration with reduced ceremony"
+    workflow="$(cat <<'WORK'
+When the user asks you to do implementation work, delegate to the **/dev-mode:builder** subagent. The builder should move quickly, keep scope tight, and still hand off to **/dev-mode:reviewer** before final delivery.
+
+You do not need to invoke these agents manually — use them as subagents when tasks arrive.
+WORK
+)"
     ;;
   poc)
     guidelines="$(cat <<'GUIDE'
@@ -74,6 +94,12 @@ GUIDE
 GUIDE
 )"
     desc="exploratory spike, not production-ready"
+    workflow="$(cat <<'WORK'
+When the user asks you to explore or prototype, delegate to **/dev-mode:builder**. The builder should optimize for learning, keep the work clearly non-production, and still use **/dev-mode:reviewer** if code changes are produced.
+
+You do not need to invoke these agents manually — use them as subagents when tasks arrive.
+WORK
+)"
     ;;
   sdd)
     guidelines="$(cat <<'GUIDE'
@@ -87,6 +113,48 @@ GUIDE
 GUIDE
 )"
     desc="spec-driven development"
+    workflow="$(cat <<'WORK'
+When the user asks for implementation, delegate to **/dev-mode:builder**. In this mode the builder should follow the full spec-driven loop before coding, then hand off to **/dev-mode:reviewer**.
+
+You do not need to invoke these agents manually — use them as subagents when tasks arrive.
+WORK
+)"
+    ;;
+  brainstorm)
+    guidelines="$(cat <<'GUIDE'
+### brainstorm Guidelines
+1. Focus on framing the problem, generating options, and comparing tradeoffs.
+2. Explore concrete approaches, constraints, risks, and likely implementation shapes.
+3. Produce sketches, recommendations, or lightweight plans without editing files.
+4. Stay in discussion mode unless the user explicitly switches to an implementation-oriented mode.
+5. End with a recommended direction or a short set of viable options.
+GUIDE
+)"
+    desc="explore ideas without writing code"
+    workflow="$(cat <<'WORK'
+Do **not** write code, edit files, or delegate to **/dev-mode:builder** in this mode. Stay in ideation, planning, architecture discussion, and tradeoff analysis.
+
+If the user wants to move from ideation to execution, have them switch to an implementation-oriented mode such as `oneoff`, `og`, `tdd`, `vibe`, `poc`, or `sdd`.
+WORK
+)"
+    ;;
+  oneoff)
+    guidelines="$(cat <<'GUIDE'
+### oneoff Guidelines
+1. Default to immediate execution of the user's request.
+2. Skip heavy planning and ceremony unless ambiguity or risk makes it necessary.
+3. Make the smallest coherent change that fully satisfies the ask.
+4. Run the minimum appropriate validation for the touched surface.
+5. If code changes are made, finish with review before final delivery.
+GUIDE
+)"
+    desc="directly implement the user's request"
+    workflow="$(cat <<'WORK'
+When the user asks for work, delegate immediately to **/dev-mode:builder**. In this mode the builder should implement directly, avoid unnecessary planning overhead, and hand off to **/dev-mode:reviewer** once the requested change is ready.
+
+You do not need to invoke these agents manually — use them as subagents when tasks arrive.
+WORK
+)"
     ;;
   *)
     echo "[dev-mode] Active mode: ${mode} (unrecognized — run /dev-mode:dm to reset)"
@@ -101,11 +169,7 @@ ${guidelines}
 
 ### How to work in this mode
 
-When the user asks you to do implementation work, delegate to the **/dev-mode:builder** subagent — it owns the full execution loop (analyze → select skills → implement → validate → hand off for review). Do not do implementation yourself; let the builder run it.
-
-When implementation is ready for review, the builder will delegate to **/dev-mode:reviewer**, which issues a verdict (Approve / Approve with suggestions / Request changes) and returns control to the builder if changes are needed.
-
-You do not need to invoke these agents manually — use them as subagents when tasks arrive.
+${workflow}
 
 ### Skills (used internally by builder and reviewer)
 | Skill | When to use |

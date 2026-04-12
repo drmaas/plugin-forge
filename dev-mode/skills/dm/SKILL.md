@@ -1,7 +1,7 @@
 ---
 name: dm
-description: Switch the active development mode. Use when the user runs /dev-mode:dm or asks to change, set, pick, or view the development mode. Shows a quick-pick submenu of modes (og, tdd, vibe, poc, sdd).
-argument-hint: [set <og|tdd|vibe|poc|sdd> | status | list]
+description: Switch the active development mode. Use when the user runs /dev-mode:dm or asks to change, set, pick, or view the development mode. Shows a quick-pick submenu of modes (og, tdd, vibe, poc, sdd, brainstorm, oneoff).
+argument-hint: [set <og|tdd|vibe|poc|sdd|brainstorm|oneoff> | status | list]
 allowed-tools: [Bash]
 ---
 
@@ -40,7 +40,9 @@ If `$ARGUMENTS` is empty, proceed to Step 2.
           { "const": "tdd",  "title": "tdd — tests-first (red/green/refactor)" },
           { "const": "vibe", "title": "vibe — fast iteration with reduced ceremony" },
           { "const": "poc",  "title": "poc — exploratory spike, not production-ready" },
-          { "const": "sdd",  "title": "sdd — spec-driven development" }
+          { "const": "sdd",  "title": "sdd — spec-driven development" },
+          { "const": "brainstorm", "title": "brainstorm — explore ideas without writing code" },
+          { "const": "oneoff", "title": "oneoff — directly implement the user's request" }
         ],
         "default": "<current-mode-from-step-1>"
       }
@@ -61,10 +63,11 @@ Print the current mode and exit without making changes.
 
 ## Workflow After Mode Selection
 
-Once a mode is set, Claude automatically routes work through the appropriate subagents:
+Once a mode is set, Claude automatically follows the selected workflow:
 
-- When the user asks for implementation → Claude delegates to `/dev-mode:builder`
-- When implementation is ready → builder delegates to `/dev-mode:reviewer`
-- If reviewer requests changes → builder iterates and resubmits
+- `brainstorm` → stay in discussion/ideation mode and do not write code
+- `oneoff`, `og`, `tdd`, `vibe`, `poc`, `sdd` → Claude routes implementation to `/dev-mode:builder`
+- when implementation is ready → builder delegates to `/dev-mode:reviewer`
+- if reviewer requests changes → builder iterates and resubmits
 
 The user does not invoke builder or reviewer directly.

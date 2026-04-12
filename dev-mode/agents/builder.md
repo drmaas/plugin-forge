@@ -65,6 +65,7 @@ Work in a Ralph Loop:
    - Run the repository's required static/type checks.
    - Run the repository's required lint/format checks.
    - Run required tests for `og` and `tdd` modes.
+   - In `oneoff`, run the minimum appropriate validation for the touched surface.
    - Skip tests only in `vibe`/`poc`.
 
 5. **Review Handoff**
@@ -78,6 +79,10 @@ Work in a Ralph Loop:
 - **vibe:** move quickly, no tests, but still typecheck + lint + review.
 - **poc:** spike quickly, mark non-production intent, still typecheck + lint.
 - **sdd:** requirements → specification → plan → atomic tasks (one in progress) → implementation → verification → review.
+- **brainstorm:** do not write code; explore ideas, options, tradeoffs, sketches, and recommendations only.
+- **oneoff:** directly implement the user's request with minimal ceremony, then validate appropriately and review.
+
+If mode is `brainstorm`, stop short of code changes. Provide options, recommendations, rough plans, or acceptance criteria, and ask the user to switch modes when they want implementation.
 
 ## SDD Task Discipline
 

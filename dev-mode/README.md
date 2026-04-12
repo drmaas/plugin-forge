@@ -21,6 +21,8 @@ A snappy development mode switcher for Claude Code. Pick your workflow with a qu
 | `vibe` | fast iteration with reduced ceremony |
 | `poc` | exploratory spike, not production-ready |
 | `sdd` | spec-driven development |
+| `brainstorm` | explore ideas without writing code |
+| `oneoff` | directly implement the user's request |
 
 ## Installation
 
@@ -61,6 +63,8 @@ Presents a radio-button form. The current mode is pre-selected.
 ```
 /dev-mode:dm set sdd
 /dev-mode:dm set tdd
+/dev-mode:dm set brainstorm
+/dev-mode:dm set oneoff
 ```
 
 ### Check current mode
@@ -104,7 +108,7 @@ Invoked by Claude when implementation work is needed. Runs a skill-first executi
 
 1. Analyze → 2. Select skills → 3. Implement → 4. Validate → 5. Delegate to reviewer
 
-Adapts behavior per active mode (og, tdd, vibe, poc, sdd).
+Adapts behavior per active mode (og, tdd, vibe, poc, sdd, brainstorm, oneoff).
 
 ### `/dev-mode:reviewer`
 
