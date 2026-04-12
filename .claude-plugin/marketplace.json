@@ -1,0 +1,38 @@
+{
+  "name": "coding-agent-template",
+  "owner": {
+    "name": "drmaas"
+  },
+  "metadata": {
+    "description": "Installable Claude plugins maintained in the coding-agent-template repository.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "dev-mode",
+      "source": "./dev-mode",
+      "description": "Snappy development mode switcher with builder/reviewer workflow, hooks, and core workflow skills.",
+      "version": "1.0.0",
+      "author": {
+        "name": "drmaas"
+      },
+      "homepage": "https://github.com/drmaas/coding-agent-template/tree/main/dev-mode",
+      "repository": "https://github.com/drmaas/coding-agent-template",
+      "license": "MIT",
+      "keywords": [
+        "dev-mode",
+        "workflow",
+        "tdd",
+        "sdd",
+        "mode-switcher"
+      ],
+      "category": "development-workflows",
+      "tags": [
+        "workflow",
+        "modes",
+        "builder",
+        "reviewer"
+      ]
+    }
+  ]
+}

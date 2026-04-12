@@ -1,110 +1,109 @@
 # coding-agent-template
 
-A generic, skill-first template for setting up coding agents with clear separation of concerns and low token overhead. Works as a Claude Code plugin out of the box.
+A generic, skill-first template for configuring Claude Code workflows with clear ownership boundaries and low token overhead.
 
-## Purpose
+This repository also acts as a **Claude plugin marketplace repo**: it contains installable plugins and a root marketplace catalog so remote users can add the repo with `/plugin marketplace add` and install plugins with `/plugin install`.
 
-This template gives you a minimal team model:
+## Project Overview
 
-- `/builder` owns implementation.
-- `/reviewer` owns review.
+This repository provides a reusable baseline for agent-driven development with a two-owner model supplied by the `dev-mode` plugin:
 
-Specialized work is handled through skills/commands loaded by the active owner, not by adding many permanent owner roles.
+- `/dev-mode:builder` owns implementation.
+- `/dev-mode:reviewer` owns review.
+
+Specialized work is handled through plugin skills loaded by the active owner rather than adding many permanent owner roles.
+
+The canonical operating policy lives in `CLAUDE.md`. Development mode selection, mode-specific process guidance, builder/reviewer agents, and workflow skills live in `dev-mode/`.
+
+## Goals
+
+- Keep implementation and review responsibilities separate.
+- Encourage modular, skill-first execution.
+- Make development mode switching fast and non-destructive.
+- Provide a portable template that can be adapted across repositories.
+
+## Design
+
+The template is designed around a small set of principles:
+
+- **Two-owner model:** one owner executes implementation, one owner performs review.
+- **Skill-first specialization:** load only the capabilities needed for the current step.
+- **Plugin-owned modes:** the `dev-mode` plugin stores active mode outside the repo and injects the process each mode should follow.
+- **Single policy source:** shared workflow policy is centralized in `CLAUDE.md`.
+
+## Plugins in This Repository
+
+| Plugin | Path | Purpose |
+| --- | --- | --- |
+| `dev-mode` | `dev-mode/` | Development mode picker and workflow plugin. Provides `/dev-mode:dm`, mode-aware hooks, `/dev-mode:builder`, `/dev-mode:reviewer`, and the core workflow skills used by those agents. |
+
+**Not plugins:** `.claude/skills/playwright-cli/` and `.claude/skills/ux-designer/` are still standalone project skills, not installable marketplace plugins.
 
 ## Repository Layout
 
 | File / Directory | Purpose |
 | --- | --- |
-| `CLAUDE.md` | Root context file. Claude reads this automatically every session. |
-| `AGENTS.md` | Team policy and routing rules (generic, reusable across repos). |
+| `.claude-plugin/marketplace.json` | Root marketplace catalog for remote `/plugin marketplace add` installs. |
+| `CLAUDE.md` | Root context and team policy file (single source of truth). |
 | `SOUL.md` | Shared behavioral defaults for all agents. |
-| `.claude/commands/builder.md` | Implementation owner (`/builder` slash command). |
-| `.claude/commands/reviewer.md` | Review owner (`/reviewer` slash command). |
-| `.claude/skills/` | Auto-discoverable project skills. |
-| `docs/modes.md` | Canonical source for active development mode. |
+| `dev-mode/` | Installable Claude plugin containing mode switching, hooks, agents, and core workflow skills. |
+| `.claude/skills/playwright-cli/` | Optional browser automation skill, kept separate from the core workflow plugin. |
+| `.claude/skills/ux-designer/` | Optional UI/UX skill, kept separate from the core workflow plugin. |
 
-## Built-in Skills
+## Building and Packaging Plugins
 
-| Skill | Purpose |
-| --- | --- |
-| `orchestrator` | Task decomposition, dependency ordering, handoff protocol. |
-| `librarian` | Codebase navigation, dependency tracing, knowledge retrieval. |
-| `coder` | Implementation patterns, refactoring discipline, type safety. |
-| `tester` | Test strategy, test generation, coverage analysis. |
-| `gatekeeper` | Quality gate enforcement, pre-handoff verification. |
-| `architect` | System design, boundary enforcement, tradeoff analysis. |
-| `ux-designer` | UI/UX patterns, accessibility, component design. |
-| `code-review` | Review methodology, severity classification, feedback format. |
-| `playwright-cli` | Browser automation, E2E testing, screenshots. |
+There is no compile step for Claude plugins in this repo. "Build" means assembling a valid plugin directory, validating it locally, and listing it in the root marketplace catalog.
 
-`/builder` loads only the skills needed for the current step to conserve tokens.
+1. Create or update a plugin directory such as `dev-mode/`.
+2. Ensure the plugin has a manifest at `.claude-plugin/plugin.json`.
+3. Keep the plugin self-contained with its own `README.md`, and any `skills/`, `agents/`, `hooks/`, `bin/`, `.mcp.json`, or `.lsp.json` files it needs.
+4. Bump the plugin version in its `plugin.json` when you ship a new release.
+5. Add or update the plugin entry in the repo's root `.claude-plugin/marketplace.json` so remote users can discover and install it.
+6. Test locally before publishing:
 
-## Installation
+```bash
+claude --plugin-dir ./dev-mode
+```
 
-Clone or copy this template into your repository root. Claude Code will auto-discover:
+Then, inside Claude Code, run:
 
-- `CLAUDE.md` — loaded every session as persistent context.
-- `.claude/commands/*.md` — available as `/builder` and `/reviewer` slash commands.
-- `.claude/skills/*/SKILL.md` — available as auto-invocable skills.
+```text
+/reload-plugins
+```
 
-No additional configuration needed.
+## Installing Plugins from This Repo
 
-## Operating Model
+Remote users can install plugins from this repository through Claude Code's plugin manager.
 
-### Ownership
+### 1. Add this repo as a marketplace
 
-- Keep one active owner at a time.
-- `/builder` executes end-to-end implementation.
-- `/reviewer` reviews and returns a verdict.
-- Delivery happens only after review passes.
+```text
+/plugin marketplace add drmaas/coding-agent-template
+```
 
-### Workflow (default)
+This uses the root `.claude-plugin/marketplace.json` file in the repo.
 
-1. `/builder` analyzes scope and selects the minimal required skill set.
-2. `/builder` implements and runs required verification checks.
-3. `/reviewer` reviews for correctness, conventions, and risk.
-4. `/builder` addresses feedback and finalizes delivery.
+### 2. Install a plugin from the marketplace
 
-### Development modes
+```text
+/plugin install dev-mode@coding-agent-template
+```
 
-The template supports five optional modes:
+### 3. Reload plugins in the current session
 
-- `traditional`
-- `tdd`
-- `vibe`
-- `poc`
-- `sdd` (spec-driven development)
+```text
+/reload-plugins
+```
 
-At session start, the active owner should first discover the current mode from `docs/modes.md` (or another documented source). If none is discoverable, ask the user to choose before implementing.
+After the marketplace is added, users can also browse plugins interactively through `/plugin`:
 
-For `sdd`, use this order:
+1. Open `/plugin`
+2. Go to **Discover**
+3. Choose `dev-mode`
+4. Install it in the desired scope
 
-1. Requirements
-2. Specification
-3. Plan
-4. Atomic tasks (one in progress at a time)
-5. Implementation
-6. Verification + review
+## Publishing Notes
 
-### Why this model
-
-- Preserves separation of concerns.
-- Reduces coordination overhead.
-- Conserves tokens by avoiding unnecessary role switching.
-- Still supports deep specialization through skills.
-
-### Ralph Loop execution
-
-Agents should run in a Ralph Loop: iterate until goal completion, verification pass, review pass, and final delivery. Avoid stopping at analysis-only states.
-
-## Customizing for your repository
-
-1. Fill in `AGENTS.md` Project Context.
-2. Define your repository's concrete quality gate commands.
-3. Document where development mode is stored/discovered.
-4. Add only skills your team actually needs to `.claude/skills/`.
-5. Keep owner roles limited to `builder` and `reviewer` unless there is a strong, sustained reason otherwise.
-
-## Cross-platform compatibility
-
-While the `.claude/` layout is native to Claude Code, the content files (`AGENTS.md`, `SOUL.md`, `docs/modes.md`) use open formats readable by any AI coding agent. Other platforms that read `AGENTS.md` (Codex, Copilot, Cursor, etc.) will pick up the team policy automatically.
+- **This repo marketplace** is the direct distribution path for remote users.
+- **Official marketplace publishing** is optional and separate. If a plugin is later published to an external marketplace, users would install it with `/plugin install <plugin-name>@<marketplace-name>`.
+- Marketplace-backed distribution is what makes `/plugin install` work for remote users; a plugin directory by itself is only enough for local development with `--plugin-dir`.

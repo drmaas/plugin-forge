@@ -1,0 +1,173 @@
+#!/usr/bin/env bash
+# dev-mode CLI helper
+# Manages mode state in $CLAUDE_PLUGIN_DATA/mode.json
+# Never touches repo files.
+
+set -euo pipefail
+
+MODES=("og" "tdd" "vibe" "poc" "sdd")
+MODE_DESCRIPTIONS=(
+  "implement -> verify -> review"
+  "tests-first (red/green/refactor)"
+  "fast iteration with reduced ceremony"
+  "exploratory spike, not production-ready"
+  "spec-driven development"
+)
+
+# Resolve data directory: use CLAUDE_PLUGIN_DATA if set, else a sensible default
+DATA_DIR="${CLAUDE_PLUGIN_DATA:-${HOME}/.claude/plugins/data/dev-mode}"
+MODE_FILE="${DATA_DIR}/mode.json"
+
+JSON_MODE=0
+
+usage() {
+  cat <<'EOF'
+Usage:
+  dm [--json] status
+  dm [--json] list
+  dm [--json] set <og|tdd|vibe|poc|sdd>
+  dm help
+
+Examples:
+  dm status
+  dm list
+  dm set sdd
+  dm --json status
+  dm --json set tdd
+EOF
+}
+
+die() {
+  echo "Error: $*" >&2
+  exit 1
+}
+
+json_escape() {
+  printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'
+}
+
+ensure_data_dir() {
+  mkdir -p "${DATA_DIR}"
+}
+
+current_mode() {
+  if [[ -f "${MODE_FILE}" ]]; then
+    # Extract "mode" field from JSON without requiring jq
+    grep -Eo '"mode"\s*:\s*"[^"]*"' "${MODE_FILE}" \
+      | head -n1 \
+      | grep -Eo '"[^"]*"$' \
+      | tr -d '"' || true
+  fi
+}
+
+contains_mode() {
+  local needle="$1"
+  local m
+  for m in "${MODES[@]}"; do
+    [[ "${m}" == "${needle}" ]] && return 0
+  done
+  return 1
+}
+
+cmd_status() {
+  local mode
+  mode="$(current_mode || true)"
+
+  if (( JSON_MODE == 1 )); then
+    if [[ -z "${mode}" ]]; then
+      printf '{"ok":true,"mode":null,"modeFile":"%s"}\n' "$(json_escape "${MODE_FILE}")"
+    else
+      printf '{"ok":true,"mode":"%s","modeFile":"%s"}\n' "$(json_escape "${mode}")" "$(json_escape "${MODE_FILE}")"
+    fi
+    return
+  fi
+
+  if [[ -z "${mode}" ]]; then
+    echo "Active mode: not set  (run: dm set <mode>)"
+  else
+    # Find and print description
+    local i
+    for i in "${!MODES[@]}"; do
+      if [[ "${MODES[$i]}" == "${mode}" ]]; then
+        echo "Active mode: ${mode}  — ${MODE_DESCRIPTIONS[$i]}"
+        return
+      fi
+    done
+    echo "Active mode: ${mode}"
+  fi
+}
+
+cmd_list() {
+  local current
+  current="$(current_mode || true)"
+
+  if (( JSON_MODE == 1 )); then
+    printf '{"ok":true,"mode":%s,"modes":[' \
+      "$([ -n "${current}" ] && printf '"%s"' "$(json_escape "${current}")" || echo 'null')"
+    local i
+    for i in "${!MODES[@]}"; do
+      (( i > 0 )) && printf ','
+      printf '{"name":"%s","description":"%s"}' \
+        "$(json_escape "${MODES[$i]}")" "$(json_escape "${MODE_DESCRIPTIONS[$i]}")"
+    done
+    printf ']}\n'
+    return
+  fi
+
+  echo "Available development modes:"
+  local i marker
+  for i in "${!MODES[@]}"; do
+    marker=" "
+    [[ "${MODES[$i]}" == "${current}" ]] && marker="*"
+    printf "  [%s] %-4s — %s\n" "${marker}" "${MODES[$i]}" "${MODE_DESCRIPTIONS[$i]}"
+  done
+}
+
+cmd_set() {
+  local new_mode="${1:-}"
+  [[ -n "${new_mode}" ]] || die "Usage: dm set <mode>"
+  contains_mode "${new_mode}" || die "Invalid mode '${new_mode}'. Valid: ${MODES[*]}"
+
+  ensure_data_dir
+  local old_mode
+  old_mode="$(current_mode || true)"
+
+  printf '{"mode":"%s"}\n' "${new_mode}" > "${MODE_FILE}"
+
+  if (( JSON_MODE == 1 )); then
+    printf '{"ok":true,"previousMode":%s,"mode":"%s"}\n' \
+      "$([ -n "${old_mode}" ] && printf '"%s"' "$(json_escape "${old_mode}")" || echo 'null')" \
+      "$(json_escape "${new_mode}")"
+    return
+  fi
+
+  if [[ -n "${old_mode}" && "${old_mode}" != "${new_mode}" ]]; then
+    echo "Switched mode: ${old_mode} -> ${new_mode}"
+  elif [[ -z "${old_mode}" ]]; then
+    echo "Set mode: ${new_mode}"
+  else
+    echo "Mode unchanged: ${new_mode}"
+  fi
+}
+
+main() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --json) JSON_MODE=1; shift ;;
+      *) break ;;
+    esac
+  done
+
+  local cmd="${1:-status}"
+  shift || true
+
+  case "${cmd}" in
+    status)  cmd_status ;;
+    list)    cmd_list ;;
+    set)     cmd_set "${1:-}" ;;
+    help|-h|--help) usage ;;
+    *) die "Unknown command '${cmd}'. Run 'dm help'." ;;
+  esac
+}
+
+main "$@"
