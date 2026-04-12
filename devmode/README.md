@@ -124,6 +124,13 @@ dm set sdd
 dm --json status
 ```
 
+When you are authoring plugin skills or hooks, prefer the known path instead of assuming `dm` is on `PATH`:
+
+```bash
+"${CLAUDE_PLUGIN_ROOT}/bin/dm" status
+"${CLAUDE_PLUGIN_ROOT}/bin/dm" --json status
+```
+
 ## Notes
 
 - `brainstorm` is explicitly non-coding mode.

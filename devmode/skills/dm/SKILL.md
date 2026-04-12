@@ -9,21 +9,27 @@ allowed-tools: [Bash]
 
 The user invoked `/devmode:dm $ARGUMENTS`.
 
+Use the helper from a known path:
+
+```bash
+DM_CMD="${CLAUDE_PLUGIN_ROOT}/bin/dm"
+```
+
 ## Instructions
 
 ### Step 1 — Parse arguments
 
 If `$ARGUMENTS` is non-empty, handle directly:
 
-- `set <mode>` → run `dm set <mode>` and confirm the switch. Done.
-- `status` → run `dm status` and display the result. Done.
-- `list` → run `dm list` and display the result. Done.
+- `set <mode>` → run `"${CLAUDE_PLUGIN_ROOT}/bin/dm" set <mode>` and confirm the switch. Done.
+- `status` → run `"${CLAUDE_PLUGIN_ROOT}/bin/dm" status` and display the result. Done.
+- `list` → run `"${CLAUDE_PLUGIN_ROOT}/bin/dm" list` and display the result. Done.
 
 If `$ARGUMENTS` is empty, proceed to Step 2.
 
 ### Step 2 — Show the mode picker
 
-1. Run `dm --json status` to get the current mode.
+1. Run `"${CLAUDE_PLUGIN_ROOT}/bin/dm" --json status` to get the current mode.
 2. Use the `ask_user` tool to present a single-select form:
 
 ```json
@@ -52,9 +58,9 @@ If `$ARGUMENTS` is empty, proceed to Step 2.
 }
 ```
 
-Set `default` to the current mode from `dm --json status`. If no mode is set, omit `default`.
+Set `default` to the current mode from `"${CLAUDE_PLUGIN_ROOT}/bin/dm" --json status`. If no mode is set, omit `default`.
 
-3. After the user selects, run `dm set <selected-mode>`.
+3. After the user selects, run `"${CLAUDE_PLUGIN_ROOT}/bin/dm" set <selected-mode>`.
 4. Confirm with a brief message: e.g., "✓ Mode set to **sdd** (spec-driven development)."
 
 ### Step 3 — If user declines/cancels
