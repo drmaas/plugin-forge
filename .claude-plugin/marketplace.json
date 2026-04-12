@@ -1,10 +1,10 @@
 {
-  "name": "coding-agent-template",
+  "name": "plugin-forge",
   "owner": {
     "name": "drmaas"
   },
   "metadata": {
-    "description": "Installable Claude plugins maintained in the coding-agent-template repository.",
+    "description": "Installable Claude plugins maintained in the plugin-forge repository.",
     "version": "1.1.0"
   },
   "plugins": [
@@ -16,8 +16,8 @@
       "author": {
         "name": "drmaas"
       },
-      "homepage": "https://github.com/drmaas/coding-agent-template/tree/main/devmode",
-      "repository": "https://github.com/drmaas/coding-agent-template",
+      "homepage": "https://github.com/drmaas/plugin-forge/tree/main/devmode",
+      "repository": "https://github.com/drmaas/plugin-forge",
       "license": "MIT",
       "keywords": [
         "devmode",

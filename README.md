@@ -1,4 +1,4 @@
-# coding-agent-template
+# plugin-forge
 
 A generic, skill-first template for configuring Claude Code workflows with clear ownership boundaries and low token overhead.
 
@@ -78,7 +78,7 @@ Remote users can install plugins from this repository through Claude Code's plug
 ### 1. Add this repo as a marketplace
 
 ```text
-/plugin marketplace add drmaas/coding-agent-template
+/plugin marketplace add drmaas/plugin-forge
 ```
 
 This uses the root `.claude-plugin/marketplace.json` file in the repo.
@@ -86,7 +86,7 @@ This uses the root `.claude-plugin/marketplace.json` file in the repo.
 ### 2. Install a plugin from the marketplace
 
 ```text
-/plugin install devmode@coding-agent-template
+/plugin install devmode@plugin-forge
 ```
 
 ### 3. Reload plugins in the current session

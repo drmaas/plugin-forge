@@ -6,5 +6,5 @@
     "name": "drmaas"
   },
   "keywords": ["devmode", "workflow", "tdd", "sdd", "mode-switcher"],
-  "repository": "https://github.com/drmaas/coding-agent-template"
+  "repository": "https://github.com/drmaas/plugin-forge"
 }

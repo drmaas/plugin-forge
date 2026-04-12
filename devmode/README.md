@@ -29,8 +29,8 @@ A snappy development mode switcher for Claude Code. Pick your workflow with a qu
 ### From this repository's marketplace
 
 ```text
-/plugin marketplace add drmaas/coding-agent-template
-/plugin install devmode@coding-agent-template
+/plugin marketplace add drmaas/plugin-forge
+/plugin install devmode@plugin-forge
 /reload-plugins
 ```
 
