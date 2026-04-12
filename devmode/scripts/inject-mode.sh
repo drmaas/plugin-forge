@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-DATA_DIR="${CLAUDE_PLUGIN_DATA:-${HOME}/.claude/plugins/data/dev-mode}"
+DATA_DIR="${CLAUDE_PLUGIN_DATA:-${HOME}/.claude/plugins/data/devmode}"
 MODE_FILE="${DATA_DIR}/mode.json"
 
 current_mode() {
@@ -20,8 +20,8 @@ mode="$(current_mode || true)"
 
 if [[ -z "${mode}" ]]; then
   cat <<'EOF'
-[dev-mode] No development mode is set.
-Run `/dev-mode:dm` to pick a mode before starting work.
+[devmode] No development mode is set.
+Run `/devmode:dm` to pick a mode before starting work.
 EOF
   exit 0
 fi
@@ -39,9 +39,9 @@ GUIDE
 )"
     desc="implement → verify → review"
     workflow="$(cat <<'WORK'
-When the user asks you to do implementation work, delegate to the **/dev-mode:builder** subagent — it owns the full execution loop (analyze → select skills → implement → validate → hand off for review). Do not do implementation yourself; let the builder run it.
+When the user asks you to do implementation work, delegate to the **/devmode:builder** subagent — it owns the full execution loop (analyze → select skills → implement → validate → hand off for review). Do not do implementation yourself; let the builder run it.
 
-When implementation is ready for review, the builder will delegate to **/dev-mode:reviewer**, which issues a verdict (Approve / Approve with suggestions / Request changes) and returns control to the builder if changes are needed.
+When implementation is ready for review, the builder will delegate to **/devmode:reviewer**, which issues a verdict (Approve / Approve with suggestions / Request changes) and returns control to the builder if changes are needed.
 
 You do not need to invoke these agents manually — use them as subagents when tasks arrive.
 WORK
@@ -59,7 +59,7 @@ GUIDE
 )"
     desc="tests-first (red/green/refactor)"
     workflow="$(cat <<'WORK'
-When the user asks for implementation, delegate to **/dev-mode:builder**. In this mode the builder writes a failing test first, implements to green, then hands off to **/dev-mode:reviewer**.
+When the user asks for implementation, delegate to **/devmode:builder**. In this mode the builder writes a failing test first, implements to green, then hands off to **/devmode:reviewer**.
 
 You do not need to invoke these agents manually — use them as subagents when tasks arrive.
 WORK
@@ -77,7 +77,7 @@ GUIDE
 )"
     desc="fast iteration with reduced ceremony"
     workflow="$(cat <<'WORK'
-When the user asks you to do implementation work, delegate to the **/dev-mode:builder** subagent. The builder should move quickly, keep scope tight, and still hand off to **/dev-mode:reviewer** before final delivery.
+When the user asks you to do implementation work, delegate to the **/devmode:builder** subagent. The builder should move quickly, keep scope tight, and still hand off to **/devmode:reviewer** before final delivery.
 
 You do not need to invoke these agents manually — use them as subagents when tasks arrive.
 WORK
@@ -95,7 +95,7 @@ GUIDE
 )"
     desc="exploratory spike, not production-ready"
     workflow="$(cat <<'WORK'
-When the user asks you to explore or prototype, delegate to **/dev-mode:builder**. The builder should optimize for learning, keep the work clearly non-production, and still use **/dev-mode:reviewer** if code changes are produced.
+When the user asks you to explore or prototype, delegate to **/devmode:builder**. The builder should optimize for learning, keep the work clearly non-production, and still use **/devmode:reviewer** if code changes are produced.
 
 You do not need to invoke these agents manually — use them as subagents when tasks arrive.
 WORK
@@ -114,7 +114,7 @@ GUIDE
 )"
     desc="spec-driven development"
     workflow="$(cat <<'WORK'
-When the user asks for implementation, delegate to **/dev-mode:builder**. In this mode the builder should follow the full spec-driven loop before coding, then hand off to **/dev-mode:reviewer**.
+When the user asks for implementation, delegate to **/devmode:builder**. In this mode the builder should follow the full spec-driven loop before coding, then hand off to **/devmode:reviewer**.
 
 You do not need to invoke these agents manually — use them as subagents when tasks arrive.
 WORK
@@ -132,7 +132,7 @@ GUIDE
 )"
     desc="explore ideas without writing code"
     workflow="$(cat <<'WORK'
-Do **not** write code, edit files, or delegate to **/dev-mode:builder** in this mode. Stay in ideation, planning, architecture discussion, and tradeoff analysis.
+Do **not** write code, edit files, or delegate to **/devmode:builder** in this mode. Stay in ideation, planning, architecture discussion, and tradeoff analysis.
 
 If the user wants to move from ideation to execution, have them switch to an implementation-oriented mode such as `oneoff`, `og`, `tdd`, `vibe`, `poc`, or `sdd`.
 WORK
@@ -150,20 +150,20 @@ GUIDE
 )"
     desc="directly implement the user's request"
     workflow="$(cat <<'WORK'
-When the user asks for work, delegate immediately to **/dev-mode:builder**. In this mode the builder should implement directly, avoid unnecessary planning overhead, and hand off to **/dev-mode:reviewer** once the requested change is ready.
+When the user asks for work, delegate immediately to **/devmode:builder**. In this mode the builder should implement directly, avoid unnecessary planning overhead, and hand off to **/devmode:reviewer** once the requested change is ready.
 
 You do not need to invoke these agents manually — use them as subagents when tasks arrive.
 WORK
 )"
     ;;
   *)
-    echo "[dev-mode] Active mode: ${mode} (unrecognized — run /dev-mode:dm to reset)"
+    echo "[devmode] Active mode: ${mode} (unrecognized — run /devmode:dm to reset)"
     exit 0
     ;;
 esac
 
 cat <<EOF
-[dev-mode] Active development mode: **${mode}** — ${desc}
+[devmode] Active development mode: **${mode}** — ${desc}
 
 ${guidelines}
 
@@ -174,13 +174,13 @@ ${workflow}
 ### Skills (used internally by builder and reviewer)
 | Skill | When to use |
 |-------|-------------|
-| /dev-mode:orchestrator | Multi-step or cross-module work |
-| /dev-mode:librarian    | Navigating unfamiliar code, tracing data flows |
-| /dev-mode:coder        | Core implementation and refactoring |
-| /dev-mode:tester       | Writing or updating tests, TDD cycles |
-| /dev-mode:gatekeeper   | Pre-handoff quality gate validation |
-| /dev-mode:architect    | System design and architectural decisions |
-| /dev-mode:code-review  | Full code review methodology (used by reviewer) |
+| /devmode:orchestrator | Multi-step or cross-module work |
+| /devmode:librarian    | Navigating unfamiliar code, tracing data flows |
+| /devmode:coder        | Core implementation and refactoring |
+| /devmode:tester       | Writing or updating tests, TDD cycles |
+| /devmode:gatekeeper   | Pre-handoff quality gate validation |
+| /devmode:architect    | System design and architectural decisions |
+| /devmode:code-review  | Full code review methodology (used by reviewer) |
 
-To switch modes, run \`/dev-mode:dm\`.
+To switch modes, run \`/devmode:dm\`.
 EOF

@@ -1,15 +1,15 @@
-# dev-mode — Claude Code Plugin
+# devmode — Claude Code Plugin
 
 A snappy development mode switcher for Claude Code. Pick your workflow with a quick-pick submenu — no repo files are ever mutated. Includes a full skill-first workflow system with builder and reviewer agents and 7 core skills.
 
 ## Features
 
-- **`/dev-mode:dm`** — opens an instant mode picker (like the model switcher)
-- **Persistent state** — stored in `~/.claude/plugins/data/dev-mode/mode.json`, never in your repo
+- **`/devmode:dm`** — opens an instant mode picker (like the model switcher)
+- **Persistent state** — stored in `~/.claude/plugins/data/devmode/mode.json`, never in your repo
 - **Auto-injected context** — active mode + guidelines + agent/skill roster injected at every session start
 - **CLI helper** — `dm` binary available in any Bash tool call while the plugin is enabled
-- **`/dev-mode:builder`** — implementation agent with skill-first execution loop
-- **`/dev-mode:reviewer`** — review agent with systematic evaluation methodology
+- **`/devmode:builder`** — implementation agent with skill-first execution loop
+- **`/devmode:reviewer`** — review agent with systematic evaluation methodology
 - **7 core skills** — architect, code-review, coder, gatekeeper, librarian, orchestrator, tester
 
 ## Modes
@@ -30,22 +30,22 @@ A snappy development mode switcher for Claude Code. Pick your workflow with a qu
 
 ```text
 /plugin marketplace add drmaas/coding-agent-template
-/plugin install dev-mode@coding-agent-template
+/plugin install devmode@coding-agent-template
 /reload-plugins
 ```
 
 ### From a local directory (development/testing)
 
 ```bash
-claude --plugin-dir ./dev-mode
+claude --plugin-dir ./devmode
 ```
 
 ### From another marketplace
 
-If `dev-mode` is later published to a remote marketplace, install it with:
+If `devmode` is later published to a remote marketplace, install it with:
 
 ```text
-/plugin install dev-mode@<marketplace-name>
+/plugin install devmode@<marketplace-name>
 ```
 
 ## Usage
@@ -53,7 +53,7 @@ If `dev-mode` is later published to a remote marketplace, install it with:
 ### Pick a mode (submenu)
 
 ```
-/dev-mode:dm
+/devmode:dm
 ```
 
 Presents a radio-button form. The current mode is pre-selected.
@@ -61,22 +61,22 @@ Presents a radio-button form. The current mode is pre-selected.
 ### Set mode directly
 
 ```
-/dev-mode:dm set sdd
-/dev-mode:dm set tdd
-/dev-mode:dm set brainstorm
-/dev-mode:dm set oneoff
+/devmode:dm set sdd
+/devmode:dm set tdd
+/devmode:dm set brainstorm
+/devmode:dm set oneoff
 ```
 
 ### Check current mode
 
 ```
-/dev-mode:dm status
+/devmode:dm status
 ```
 
 ### List all modes
 
 ```
-/dev-mode:dm list
+/devmode:dm list
 ```
 
 ### CLI (in Bash tool or terminal)
@@ -92,8 +92,8 @@ dm --json set tdd
 ### Use the workflow
 
 Once a mode is set, just give Claude a task. It will automatically:
-1. Delegate implementation to `/dev-mode:builder`
-2. Builder delegates review to `/dev-mode:reviewer` when ready
+1. Delegate implementation to `/devmode:builder`
+2. Builder delegates review to `/devmode:reviewer` when ready
 3. Reviewer returns a verdict; builder iterates if needed
 
 You don't invoke builder or reviewer directly.
@@ -102,7 +102,7 @@ You don't invoke builder or reviewer directly.
 
 The builder and reviewer agents are invoked automatically by Claude based on the active mode — you don't call them directly.
 
-### `/dev-mode:builder`
+### `/devmode:builder`
 
 Invoked by Claude when implementation work is needed. Runs a skill-first execution loop:
 
@@ -110,26 +110,26 @@ Invoked by Claude when implementation work is needed. Runs a skill-first executi
 
 Adapts behavior per active mode (og, tdd, vibe, poc, sdd, brainstorm, oneoff).
 
-### `/dev-mode:reviewer`
+### `/devmode:reviewer`
 
-Invoked by the builder when implementation is ready for review. Uses the `/dev-mode:code-review` skill and issues one of:
+Invoked by the builder when implementation is ready for review. Uses the `/devmode:code-review` skill and issues one of:
 - **Approve**
 - **Approve with suggestions**
 - **Request changes** (returns to builder)
 
 ## Skills
 
-All skills are namespaced under `/dev-mode:`. They load automatically based on context, or you can name them explicitly.
+All skills are namespaced under `/devmode:`. They load automatically based on context, or you can name them explicitly.
 
 | Skill | When to use |
 |-------|-------------|
-| `/dev-mode:orchestrator` | Multi-step or cross-module work |
-| `/dev-mode:librarian`    | Navigating unfamiliar code, tracing data flows |
-| `/dev-mode:coder`        | Core implementation and refactoring |
-| `/dev-mode:tester`       | Writing or updating tests, TDD cycles |
-| `/dev-mode:gatekeeper`   | Pre-handoff quality gate validation |
-| `/dev-mode:architect`    | System design and architectural decisions |
-| `/dev-mode:code-review`  | Full code review methodology (used by reviewer) |
+| `/devmode:orchestrator` | Multi-step or cross-module work |
+| `/devmode:librarian`    | Navigating unfamiliar code, tracing data flows |
+| `/devmode:coder`        | Core implementation and refactoring |
+| `/devmode:tester`       | Writing or updating tests, TDD cycles |
+| `/devmode:gatekeeper`   | Pre-handoff quality gate validation |
+| `/devmode:architect`    | System design and architectural decisions |
+| `/devmode:code-review`  | Full code review methodology (used by reviewer) |
 
 **Not included** (install separately if needed):
 - `playwright-cli` — requires the `playwright-cli` binary
@@ -152,30 +152,30 @@ All skills are namespaced under `/dev-mode:`. They load automatically based on c
 
 ```bash
 # Test the CLI helper locally
-export CLAUDE_PLUGIN_DATA=/tmp/dev-mode-test
-./dev-mode/bin/dm set sdd
-./dev-mode/bin/dm status
-./dev-mode/bin/dm list
-./dev-mode/bin/dm --json status
+export CLAUDE_PLUGIN_DATA=/tmp/devmode-test
+./devmode/bin/dm set sdd
+./devmode/bin/dm status
+./devmode/bin/dm list
+./devmode/bin/dm --json status
 
 # Test hooks
-CLAUDE_PLUGIN_DATA=/tmp/dev-mode-test CLAUDE_PLUGIN_ROOT=./dev-mode ./dev-mode/scripts/inject-mode.sh
-CLAUDE_PLUGIN_DATA=/tmp/test-no-mode CLAUDE_PLUGIN_ROOT=./dev-mode ./dev-mode/scripts/ensure-mode.sh
+CLAUDE_PLUGIN_DATA=/tmp/devmode-test CLAUDE_PLUGIN_ROOT=./devmode ./devmode/scripts/inject-mode.sh
+CLAUDE_PLUGIN_DATA=/tmp/test-no-mode CLAUDE_PLUGIN_ROOT=./devmode ./devmode/scripts/ensure-mode.sh
 
 # Load the plugin in Claude Code
-claude --plugin-dir ./dev-mode
+claude --plugin-dir ./devmode
 ```
 
 ## Packaging for Remote Users
 
-`dev-mode` is packaged for remote installation by listing it in the repo root marketplace catalog:
+`devmode` is packaged for remote installation by listing it in the repo root marketplace catalog:
 
-- Plugin manifest: `dev-mode/.claude-plugin/plugin.json`
+- Plugin manifest: `devmode/.claude-plugin/plugin.json`
 - Marketplace entry: `.claude-plugin/marketplace.json`
 
 For a release:
 
-1. Update `dev-mode/.claude-plugin/plugin.json`
+1. Update `devmode/.claude-plugin/plugin.json`
 2. Update the matching entry in `.claude-plugin/marketplace.json` if metadata changed
 3. Push the repository so remote users can install or update through `/plugin`
 

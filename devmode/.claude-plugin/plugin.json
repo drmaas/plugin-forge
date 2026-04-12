@@ -1,10 +1,10 @@
 {
-  "name": "dev-mode",
+  "name": "devmode",
   "version": "1.1.0",
   "description": "Snappy development mode switcher for Claude Code. Pick og, tdd, vibe, poc, sdd, brainstorm, or oneoff — state stored externally, never mutates repo files.",
   "author": {
     "name": "drmaas"
   },
-  "keywords": ["dev-mode", "workflow", "tdd", "sdd", "mode-switcher"],
+  "keywords": ["devmode", "workflow", "tdd", "sdd", "mode-switcher"],
   "repository": "https://github.com/drmaas/coding-agent-template"
 }

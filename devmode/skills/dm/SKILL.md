@@ -1,13 +1,13 @@
 ---
 name: dm
-description: Switch the active development mode. Use when the user runs /dev-mode:dm or asks to change, set, pick, or view the development mode. Shows a quick-pick submenu of modes (og, tdd, vibe, poc, sdd, brainstorm, oneoff).
+description: Switch the active development mode. Use when the user runs /devmode:dm or asks to change, set, pick, or view the development mode. Shows a quick-pick submenu of modes (og, tdd, vibe, poc, sdd, brainstorm, oneoff).
 argument-hint: [set <og|tdd|vibe|poc|sdd|brainstorm|oneoff> | status | list]
 allowed-tools: [Bash]
 ---
 
 # Development Mode Switcher
 
-The user invoked `/dev-mode:dm $ARGUMENTS`.
+The user invoked `/devmode:dm $ARGUMENTS`.
 
 ## Instructions
 
@@ -66,8 +66,8 @@ Print the current mode and exit without making changes.
 Once a mode is set, Claude automatically follows the selected workflow:
 
 - `brainstorm` → stay in discussion/ideation mode and do not write code
-- `oneoff`, `og`, `tdd`, `vibe`, `poc`, `sdd` → Claude routes implementation to `/dev-mode:builder`
-- when implementation is ready → builder delegates to `/dev-mode:reviewer`
+- `oneoff`, `og`, `tdd`, `vibe`, `poc`, `sdd` → Claude routes implementation to `/devmode:builder`
+- when implementation is ready → builder delegates to `/devmode:reviewer`
 - if reviewer requests changes → builder iterates and resubmits
 
 The user does not invoke builder or reviewer directly.
