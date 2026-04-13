@@ -59,7 +59,7 @@ If your repo does not provide one of these gates, document the equivalent verifi
 
 Use modes only if they are useful for your team:
 
-- `og`: implement, then verify, then review.
+- `og`: lightweight plan → implement → verify → review.
 - `tdd`: tests-first (red/green/refactor), then review.
 - `vibe`: fast iteration with reduced ceremony.
 - `poc`: exploratory spike, not production-ready.
@@ -68,6 +68,16 @@ Use modes only if they are useful for your team:
 - `oneoff`: directly implement the requested change with minimal ceremony.
 
 If you use modes, document where mode is configured in your environment.
+
+### OG Guidance
+
+When mode is `og`, add a short planning pass before coding:
+
+1. Confirm scope, constraints, and likely touched areas.
+2. Sketch a lightweight plan: implementation order, impacted files, and validation approach.
+3. Use skills selectively rather than by default. Reach for `orchestrator`, `architect`, or `librarian` when the task is multi-step, boundary-sensitive, or unfamiliar.
+
+If the work needs a full spec, task decomposition, and traceability, prefer `sdd` instead of overloading `og`.
 
 ### Mode Discovery Rule (session start)
 

@@ -31,15 +31,16 @@ case "${mode}" in
     guidelines="$(cat <<'GUIDE'
 ### og Guidelines
 1. Confirm requirements and constraints before coding.
-2. Implement in small, reviewable increments.
-3. Run required quality gates after implementation (type/static checks, lint/format, tests).
-4. Fix regressions before handoff.
-5. Request review with a concise change summary and validation results.
+2. Sketch a lightweight plan before coding: touched surfaces, change order, and validation.
+3. Load planning-oriented skills only when task complexity justifies it.
+4. Implement in small, reviewable increments.
+5. Run required quality gates after implementation (type/static checks, lint/format, tests).
+6. Fix regressions before handoff and request review with a concise summary.
 GUIDE
 )"
-    desc="implement → verify → review"
+    desc="light plan → implement → verify → review"
     workflow="$(cat <<'WORK'
-When the user asks you to do implementation work, delegate to the **/devmode:builder** subagent — it owns the full execution loop (analyze → select skills → implement → validate → hand off for review). Do not do implementation yourself; let the builder run it.
+When the user asks you to do implementation work, delegate to the **/devmode:builder** subagent — it owns the full execution loop (analyze → make a lightweight plan → load skills as needed → implement → validate → hand off for review). Do not do implementation yourself; let the builder run it.
 
 When implementation is ready for review, the builder will delegate to **/devmode:reviewer**, which issues a verdict (Approve / Approve with suggestions / Request changes) and returns control to the builder if changes are needed.
 

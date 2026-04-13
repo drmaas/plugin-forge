@@ -96,7 +96,7 @@ After a mode is set, just work normally. The plugin injects the selected flow in
 
 | Mode | Behavior |
 | --- | --- |
-| `og` | implement, then verify, then review |
+| `og` | light plan → implement → verify → review |
 | `tdd` | write tests first, implement to green, then review |
 | `vibe` | optimize for fast iteration with lighter process |
 | `poc` | explore quickly without claiming production readiness |
@@ -112,6 +112,8 @@ For implementation-oriented modes, Claude uses:
 - `/devmode:reviewer` for review
 
 These are part of the workflow; users generally do **not** invoke them directly.
+
+In `og`, the builder adds a short planning pass before coding and only loads planning-oriented skills when the task complexity justifies it.
 
 ### CLI helper
 

@@ -42,7 +42,7 @@ If `$ARGUMENTS` is empty, proceed to Step 2.
         "title": "Development Mode",
         "description": "Choose the workflow for this session",
         "oneOf": [
-          { "const": "og",   "title": "og  — implement → verify → review" },
+          { "const": "og",   "title": "og — light plan → implement → verify → review" },
           { "const": "tdd",  "title": "tdd — tests-first (red/green/refactor)" },
           { "const": "vibe", "title": "vibe — fast iteration with reduced ceremony" },
           { "const": "poc",  "title": "poc — exploratory spike, not production-ready" },
