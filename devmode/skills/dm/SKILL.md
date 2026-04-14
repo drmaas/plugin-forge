@@ -1,7 +1,7 @@
 ---
 name: dm
 description: Switch the active development mode. Use when the user runs /devmode:dm or asks to change, set, pick, or view the development mode. Shows a quick-pick submenu of modes (og, tdd, vibe, poc, sdd, brainstorm, oneoff).
-argument-hint: [set <og|tdd|vibe|poc|sdd|brainstorm|oneoff> | status | list]
+argument-hint: [set <og|tdd|vibe|poc|sdd|brainstorm|oneoff> | explain <og|tdd|vibe|poc|sdd|brainstorm|oneoff> | status | list]
 allowed-tools: [Bash]
 ---
 
@@ -24,6 +24,7 @@ If `$ARGUMENTS` is non-empty, handle directly:
 - `set <mode>` → run `"${CLAUDE_PLUGIN_ROOT}/bin/dm" set <mode>` and confirm the switch. Done.
 - `status` → run `"${CLAUDE_PLUGIN_ROOT}/bin/dm" status` and display the result. Done.
 - `list` → run `"${CLAUDE_PLUGIN_ROOT}/bin/dm" list` and display the result. Done.
+- `explain <mode>` → run `"${CLAUDE_PLUGIN_ROOT}/bin/dm" explain <mode>` and display the full mode flow and validation expectations. Done.
 
 If `$ARGUMENTS` is empty, proceed to Step 2.
 

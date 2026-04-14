@@ -1,35 +1,45 @@
 # plugin-forge
 
-`plugin-forge` is a repository of installable **Claude Code productivity plugins**.
+`plugin-forge` is a marketplace repository of installable Claude Code productivity plugins.
 
-The top-level README is intentionally short:
+Use it when you want to improve developer workflow without rewriting repo instructions or custom prompts.
 
-- what this repo is for
-- what plugins it contains
-- how to install them
-- how to use each plugin at a high level
+## Quick Start
 
-Detailed behavior, design, and implementation notes live in each plugin directory.
+```text
+/plugin marketplace add drmaas/plugin-forge
+/plugin install devmode@plugin-forge
+/reload-plugins
+```
 
-## What This Repo Contains
+Then choose a mode:
 
-This repository ships a Claude plugin marketplace catalog at `.claude-plugin/marketplace.json` and the plugins listed in it.
+```text
+/devmode:dm
+```
 
-### Plugins
+## What This Repo Provides
+
+This repository ships:
+
+- a marketplace catalog at `.claude-plugin/marketplace.json`
+- installable plugins listed in that catalog
+
+### Available Plugins
 
 | Plugin | Path | Purpose |
 | --- | --- | --- |
-| `devmode` | `devmode/` | Development workflow plugin for switching modes and steering Claude’s execution style. |
+| `devmode` | `devmode/` | Switch Claude execution style by mode (`og`, `tdd`, `vibe`, `poc`, `sdd`, `brainstorm`, `oneoff`). |
 
-## Install Plugins from This Repo
+## Install from Marketplace
 
-### 1. Add this repository as a marketplace
+1. Add this repository as a marketplace:
 
 ```text
 /plugin marketplace add drmaas/plugin-forge
 ```
 
-### 2. Install a plugin
+2. Install a plugin:
 
 ```text
 /plugin install <plugin-name>@plugin-forge
@@ -41,80 +51,65 @@ Example:
 /plugin install devmode@plugin-forge
 ```
 
-### 3. Reload plugins in the current session
+3. Reload plugins in the current session:
 
 ```text
 /reload-plugins
 ```
 
-You can also browse the marketplace interactively:
+You can also browse interactively:
 
-1. Run `/plugin`
-2. Open **Discover**
-3. Choose a plugin from `plugin-forge`
-4. Install it in the scope you want
+1. Run `/plugin`.
+2. Open **Discover**.
+3. Select `plugin-forge`.
+4. Install the plugin in your desired scope.
 
-## Use the Plugins
+## Use `devmode`
 
-### `devmode`
+`devmode` controls how Claude executes work in the current session.
 
-**Purpose:** choose how Claude should approach work in the current session.
-
-**What it provides:**
-
-- `/devmode:dm` — mode picker and mode status
-- `/devmode:builder` — implementation agent used automatically for implementation-oriented modes
-- `/devmode:reviewer` — review agent used automatically before final delivery
-
-**How to use it:**
-
-1. Install `devmode`
-2. Set a mode:
+Core command:
 
 ```text
 /devmode:dm
 ```
 
-or:
+Useful direct commands:
 
 ```text
+/devmode:dm status
+/devmode:dm list
 /devmode:dm set oneoff
 ```
 
-3. Give Claude a task
+Implementation-oriented modes route through builder and reviewer automatically. `brainstorm` mode stays non-coding.
 
-The plugin will inject the active mode and its workflow into the session. In implementation-oriented modes, Claude routes work through the builder/reviewer flow automatically.
+For full mode-by-mode flow details, Ralph Loop (Ralph mode) behavior, and troubleshooting, see [devmode/README.md](./devmode/README.md).
 
-**Modes currently included:**
+## Local Development (Plugin Authors)
 
-- `og`
-- `tdd`
-- `vibe`
-- `poc`
-- `sdd`
-- `brainstorm`
-- `oneoff`
+Each plugin should be self-contained in its own directory and include `.claude-plugin/plugin.json`.
 
-For full details, see [`devmode/README.md`](./devmode/README.md).
+When adding or updating a plugin in this repository:
 
-## Adding or Updating Plugins
+1. Create or update the plugin directory.
+2. Add or update plugin manifest and files.
+3. Update `.claude-plugin/marketplace.json`.
+4. Update that plugin's own README.
 
-Each plugin should be self-contained in its own directory and include its own `.claude-plugin/plugin.json`.
-
-When adding a plugin to this repository:
-
-1. Create the plugin directory
-2. Add its manifest and files
-3. Add it to `.claude-plugin/marketplace.json`
-4. Document usage in the plugin's own README
-
-There is no compile step for these plugins. Local development is done by loading a plugin directory directly:
+Run a local plugin directory directly:
 
 ```bash
 claude --plugin-dir ./devmode
 ```
 
-## More Detail
+## Troubleshooting
 
-- Marketplace catalog: [`.claude-plugin/marketplace.json`](./.claude-plugin/marketplace.json)
-- `devmode` plugin docs: [`devmode/README.md`](./devmode/README.md)
+- Plugin installed but behavior did not change: run `/reload-plugins`.
+- Not sure which mode is active: run `/devmode:dm status`.
+- Need full plugin behavior details: read [devmode/README.md](./devmode/README.md).
+
+## References
+
+- Marketplace catalog: [.claude-plugin/marketplace.json](./.claude-plugin/marketplace.json)
+- `devmode` docs: [devmode/README.md](./devmode/README.md)

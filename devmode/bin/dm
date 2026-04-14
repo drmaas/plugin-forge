@@ -28,12 +28,14 @@ Usage:
   dm [--json] status
   dm [--json] list
   dm [--json] set <og|tdd|vibe|poc|sdd|brainstorm|oneoff>
+  dm [--json] explain <og|tdd|vibe|poc|sdd|brainstorm|oneoff>
   dm help
 
 Examples:
   dm status
   dm list
   dm set sdd
+  dm explain sdd
   dm --json status
   dm --json set tdd
 EOF
@@ -152,6 +154,87 @@ cmd_set() {
   fi
 }
 
+cmd_explain() {
+  local mode="${1:-}"
+  [[ -n "${mode}" ]] || die "Usage: dm explain <mode>"
+  contains_mode "${mode}" || die "Invalid mode '${mode}'. Valid: ${MODES[*]}"
+
+  local description=""
+  local i
+  for i in "${!MODES[@]}"; do
+    if [[ "${MODES[$i]}" == "${mode}" ]]; then
+      description="${MODE_DESCRIPTIONS[$i]}"
+      break
+    fi
+  done
+
+  local flow=""
+  local validation=""
+  local notes=""
+
+  case "${mode}" in
+    og)
+      flow="1) Confirm requirements and constraints.\n2) Make a lightweight plan (surfaces, order, validation).\n3) Implement in small increments.\n4) Run quality gates.\n5) Hand off to reviewer and iterate until approved."
+      validation="Required: type/static checks, lint/format checks, and tests for touched behavior."
+      notes="Best default for production-oriented work with moderate ceremony."
+      ;;
+    tdd)
+      flow="1) Write a failing test for one behavior.\n2) Implement minimum code to pass.\n3) Refactor after green.\n4) Repeat red/green/refactor cycles.\n5) Hand off to reviewer and iterate until approved."
+      validation="Required: behavior-focused tests through the cycle, plus full quality gates before handoff."
+      notes="Use when test-first discipline is a hard requirement."
+      ;;
+    vibe)
+      flow="1) Prioritize speed and tight scope.\n2) Implement highest-value slice first.\n3) Keep feedback loops short.\n4) Hand off to reviewer and iterate until approved."
+      validation="Minimum expected: targeted tests or smoke validation before review; document deferred hardening explicitly."
+      notes="Use for fast iteration, not for skipping accountability."
+      ;;
+    poc)
+      flow="1) Define the hypothesis to prove/disprove.\n2) Build the simplest validating spike.\n3) Timebox exploration.\n4) Document assumptions, gaps, and productionization needs.\n5) Hand off to reviewer if code changed."
+      validation="Minimum expected: basic safety validation to ensure the spike runs and results are trustworthy."
+      notes="Output is learning; do not treat as production-ready without hardening."
+      ;;
+    sdd)
+      flow="1) Capture requirements, constraints, non-goals, and acceptance criteria.\n2) Draft concise spec (scope/contracts/edge cases/validation).\n3) Build phased plan and dependencies.\n4) Decompose into atomic tasks with one active task at a time.\n5) Implement with requirement traceability.\n6) Hand off to reviewer and iterate until approved."
+      validation="Required: full quality gates, plus explicit traceability from implemented changes back to requirements."
+      notes="Best for complex or high-risk work where predictability matters."
+      ;;
+    brainstorm)
+      flow="1) Frame problem and constraints.\n2) Explore options and tradeoffs.\n3) Recommend direction or options list.\n4) Do not write code or edit files."
+      validation="No code validation expected because this is non-coding mode. Validate via reasoning quality, constraints coverage, and decision clarity."
+      notes="Switch to an implementation mode when ready to execute."
+      ;;
+    oneoff)
+      flow="1) Execute request immediately.\n2) Skip heavy planning unless ambiguity/risk warrants it.\n3) Make smallest coherent change satisfying the ask.\n4) Hand off to reviewer and iterate until approved."
+      validation="Required: minimum appropriate validation for touched surfaces (targeted checks), plus review before final delivery."
+      notes="Best for clear, bounded tasks that do not need heavy process."
+      ;;
+  esac
+
+  if (( JSON_MODE == 1 )); then
+    printf '{"ok":true,"mode":"%s","description":"%s","flow":"%s","validation":"%s","notes":"%s"}\n' \
+      "$(json_escape "${mode}")" \
+      "$(json_escape "${description}")" \
+      "$(json_escape "${flow}")" \
+      "$(json_escape "${validation}")" \
+      "$(json_escape "${notes}")"
+    return
+  fi
+
+  cat <<EOF
+Mode: ${mode}
+Summary: ${description}
+
+Flow:
+${flow//\\n/$'\n'}
+
+Validation expectations:
+${validation}
+
+Notes:
+${notes}
+EOF
+}
+
 main() {
   while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -167,6 +250,7 @@ main() {
     status)  cmd_status ;;
     list)    cmd_list ;;
     set)     cmd_set "${1:-}" ;;
+    explain) cmd_explain "${1:-}" ;;
     help|-h|--help) usage ;;
     *) die "Unknown command '${cmd}'. Run 'dm help'." ;;
   esac
