@@ -206,6 +206,7 @@ install_project_assets() {
   mkdir -p "${claude_dir}/skills" "${claude_dir}/agents" "${claude_dir}/commands" "${claude_dir}/rules"
 
   rm -rf "${claude_dir}/commands/devmode"
+  rm -f "${claude_dir}/commands/devmode.md"
   rm -f "${claude_dir}/agents/devmode-builder.md" "${claude_dir}/agents/devmode-reviewer.md"
   remove_managed_skill_dirs "${claude_dir}/skills"
 
@@ -226,7 +227,7 @@ install_project_assets() {
 
   cat <<EOF
 Installed devmode into ${target_dir}
-- command: .claude/commands/devmode/dm.md
+    - command: .claude/commands/devmode.md
 - skills: .claude/skills/devmode-*
 - agents: .claude/agents/devmode-*.md
 - hooks: .claude/settings.json
@@ -543,7 +544,7 @@ cmd_hook_inject_mode() {
   if [[ -z "${mode}" ]]; then
     cat <<'EOF'
 [devmode] No development mode is set.
-Run `/devmode:dm` to pick a mode before starting work.
+      Run `/devmode` to pick a mode before starting work.
 EOF
     return
   fi
@@ -680,7 +681,7 @@ WORK
 )"
       ;;
     *)
-      printf '[devmode] Active mode: %s (unrecognized - run /devmode:dm to reset)\n' "${mode}"
+      printf '[devmode] Active mode: %s (unrecognized - run /devmode to reset)\n' "${mode}"
       return
       ;;
   esac
@@ -706,13 +707,13 @@ ${workflow}
 | devmode-code-review  | Full code review methodology (used by reviewer) |
 | devmode-ux-designer  | Optional for frontend, UX, accessibility, and other user-facing work |
 
-To switch modes, run \`/devmode:dm\`.
+To switch modes, run \`/devmode\`.
 EOF
 }
 
 cmd_hook_ensure_mode() {
   if [[ -z "$(current_mode)" ]]; then
-    echo "[devmode] No development mode is set. Run \`/devmode:dm\` to pick one before continuing." >&2
+    echo "[devmode] No development mode is set. Run \`/devmode\` to pick one before continuing." >&2
     exit 2
   fi
 }

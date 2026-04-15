@@ -2,7 +2,7 @@
 
 This repository uses **devmode** for Claude Code workflow control.
 
-- Set or inspect the current mode with `/devmode:dm`.
+- Set or inspect the current mode with `/devmode`.
 - Implementation work routes to `devmode-builder`.
 - Review work routes to `devmode-reviewer`.
 - Mode state is stored outside the repository and read through the global `devmode` CLI.

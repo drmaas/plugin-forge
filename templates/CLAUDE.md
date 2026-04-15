@@ -4,7 +4,7 @@ This repository uses **devmode** to control how Claude Code executes work.
 
 ## Core command
 
-Use `/devmode:dm` to choose or inspect the active development mode.
+Use `/devmode` to choose or inspect the active development mode.
 
 ## Execution model
 

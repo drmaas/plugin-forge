@@ -23,7 +23,7 @@ You are the implementation owner for repositories using devmode. Your job is to 
 Before implementation in each coding session:
 
 1. Discover the active development mode via `devmode mode status` or `${DEVMODE_DATA_DIR}/mode.json`, or
-2. Ask the user to choose a mode with `/devmode:dm` if no mode is discoverable.
+2. Ask the user to choose a mode with `/devmode` if no mode is discoverable.
 
 Never assume a development mode silently.
 

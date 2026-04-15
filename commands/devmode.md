@@ -1,5 +1,5 @@
 ---
-description: Switch the active development mode. Use when the user runs /devmode:dm or asks to change, set, pick, or view the development mode. Shows a quick-pick submenu of modes (og, tdd, vibe, poc, sdd, brainstorm, oneoff).
+description: Switch the active development mode. Use when the user runs /devmode or asks to change, set, pick, or view the development mode. Shows a quick-pick submenu of modes (og, tdd, vibe, poc, sdd, brainstorm, oneoff).
 argument-hint: [set <og|tdd|vibe|poc|sdd|brainstorm|oneoff> | explain <og|tdd|vibe|poc|sdd|brainstorm|oneoff> | status | list]
 allowed-tools:
   - Bash
@@ -8,7 +8,7 @@ allowed-tools:
 
 # Development Mode Switcher
 
-The user invoked `/devmode:dm $ARGUMENTS`.
+The user invoked `/devmode $ARGUMENTS`.
 
 Use the globally installed CLI:
 

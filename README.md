@@ -67,10 +67,10 @@ curl -fsSL https://raw.githubusercontent.com/drmaas/devmode/refs/heads/main/inst
 Inside an installed repository:
 
 ```text
-/devmode:dm
-/devmode:dm status
-/devmode:dm list
-/devmode:dm set oneoff
+ /devmode
+ /devmode status
+ /devmode list
+ /devmode set oneoff
 ```
 
 From the shell:
@@ -90,7 +90,7 @@ Implementation-oriented modes route through `devmode-builder` and `devmode-revie
 
 `devmode install` writes:
 
-- `.claude/commands/devmode/dm.md`
+- `.claude/commands/devmode.md`
 - `.claude/skills/devmode-*`
 - `.claude/agents/devmode-*.md`
 - `.claude/settings.json` hook entries that call the global `devmode` CLI

@@ -84,7 +84,7 @@ If the work needs a full spec, task decomposition, and traceability, prefer `sdd
 At the start of each coding session, the active owner must do one of the following before implementation:
 
 1. **Discover** the current development mode from `devmode mode status` or `${DEVMODE_DATA_DIR}/mode.json`, or
-2. **Ask** the user to pick a mode if no mode is discoverable (`/devmode:dm`).
+2. **Ask** the user to pick a mode if no mode is discoverable (`/devmode`).
 
 Never assume a mode silently.
 
@@ -181,5 +181,5 @@ When applying this template to a new repository:
 2. Define concrete **quality gate commands** for this repo.
 3. Install the global **devmode** CLI with `curl -fsSL https://raw.githubusercontent.com/drmaas/devmode/refs/heads/main/install.sh | bash`.
 4. In the target repository, run `devmode install` to write the `.claude/` assets.
-5. Use `/devmode:dm` to set the active development mode.
+5. Use `/devmode` to set the active development mode.
 6. Add only the extra separate-plugin skills your team actually uses (optional: `playwright-cli`).
