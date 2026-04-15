@@ -12,13 +12,15 @@ It gives you:
 
 ## Install the CLI
 
-From a clone of this repository:
+Install it directly:
 
 ```bash
-./install.sh
+curl -fsSL https://raw.githubusercontent.com/drmaas/devmode/refs/heads/main/install.sh | bash
 ```
 
 That installs a global `devmode` wrapper and a local share directory under `~/.local` by default.
+
+If you already have the repository cloned, `./install.sh` still works.
 
 ## Install devmode into a repository
 
@@ -50,6 +52,12 @@ You can also remove the global install directly from this repository:
 
 ```bash
 ./install.sh uninstall
+```
+
+Or from the raw installer:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/drmaas/devmode/refs/heads/main/install.sh | bash -s uninstall
 ```
 
 ## Use devmode
