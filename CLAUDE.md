@@ -146,15 +146,15 @@ When mode is `sdd`, follow this sequence:
 | `devmode-gatekeeper` | Quality gate enforcement, verification sequencing | Pre-handoff validation |
 | `devmode-architect` | System design, boundary enforcement, tradeoff analysis | Architecture decisions, new module design |
 | `devmode-code-review` | Review methodology, severity classification, feedback format | Any code review task |
+| `devmode-ux-designer` | UI/UX patterns, accessibility, component design | Frontend, accessibility, and other user-facing work |
 
 ### Optional Skills (separate plugins)
 
 | Skill | Purpose | Install |
 | --- | --- | --- |
-| `ux-designer` | UI/UX patterns, accessibility, component design | `.claude/skills/ux-designer/` |
 | `playwright-cli` | Browser automation, E2E testing, screenshots | `.claude/skills/playwright-cli/` |
 
-Skills live in `skills/devmode-<name>/SKILL.md` in this repository and install into `.claude/skills/` in target repositories.
+Internal skills live in `skills/devmode-<name>/SKILL.md` in this repository and install into `.claude/skills/` in target repositories.
 
 ---
 
@@ -182,4 +182,4 @@ When applying this template to a new repository:
 3. Install the global **devmode** CLI with `./install.sh` (or your preferred wrapper).
 4. Run `devmode install <repo>` to write the `.claude/` assets into the target repository.
 5. Use `/devmode:dm` to set the active development mode.
-6. Add only the extra skills your team actually uses (optional: `ux-designer`, `playwright-cli`).
+6. Add only the extra separate-plugin skills your team actually uses (optional: `playwright-cli`).

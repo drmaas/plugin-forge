@@ -7,7 +7,7 @@ This repository uses **devmode** for Claude Code workflow control.
 - Review work routes to `devmode-reviewer`.
 - Mode state is stored outside the repository and read through the global `devmode` CLI.
 
-Installed internal skills:
+Installed skills:
 
 - `devmode-orchestrator`
 - `devmode-librarian`
@@ -16,3 +16,4 @@ Installed internal skills:
 - `devmode-gatekeeper`
 - `devmode-architect`
 - `devmode-code-review`
+- `devmode-ux-designer` (load when work touches frontend UX, accessibility, or other user-facing design)

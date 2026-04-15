@@ -21,6 +21,7 @@ Use `/devmode:dm` to choose or inspect the active development mode.
 - `devmode-gatekeeper`
 - `devmode-architect`
 - `devmode-code-review`
+- `devmode-ux-designer` (load when work touches frontend UX, accessibility, or other user-facing design)
 
 ## Expectations
 

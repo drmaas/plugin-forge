@@ -58,7 +58,7 @@ Work in a Ralph Loop:
       - Writing or updating tests / TDD → `devmode-tester`
       - Pre-handoff quality checks → `devmode-gatekeeper`
       - System design / boundary decisions → `devmode-architect`
-      - Frontend / UI / accessibility → `ux-designer` (separate plugin, if installed)
+      - Frontend / UI / accessibility → `devmode-ux-designer`
       - Browser / E2E verification → `playwright-cli` (separate plugin, if installed)
    - Multiple skills can be loaded simultaneously when a task spans domains.
 

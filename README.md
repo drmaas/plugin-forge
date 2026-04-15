@@ -8,6 +8,7 @@ It gives you:
 - a repo installer that drops the needed `.claude/` assets into any repository
 - mode-based execution (`og`, `tdd`, `vibe`, `poc`, `sdd`, `brainstorm`, `oneoff`)
 - builder/reviewer routing with persistent mode state outside the repo
+- a bundled `devmode-ux-designer` skill for frontend, accessibility, and other user-facing work
 
 ## Install the CLI
 
@@ -88,9 +89,9 @@ Implementation-oriented modes route through `devmode-builder` and `devmode-revie
 
 This repository is the product source:
 
-- `bin/` - global CLI and mode helper
+- `bin/` - global CLI
 - `commands/` - installed project command source
-- `skills/` - installed internal skill source
+- `skills/` - installed skill source, including bundled optional skills such as `devmode-ux-designer`
 - `agents/` - installed subagent source
 - `templates/` - generated instruction files for target repos
 

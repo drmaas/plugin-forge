@@ -22,7 +22,7 @@ case "${ACTION}" in
       "${REPO_ROOT}/templates" \
       "${SHARE_DIR}/"
 
-    chmod +x "${SHARE_DIR}/bin/devmode" "${SHARE_DIR}/bin/dm"
+    chmod +x "${SHARE_DIR}/bin/devmode"
 
     cat > "${BIN_DIR}/devmode" <<EOF
 #!/usr/bin/env bash
