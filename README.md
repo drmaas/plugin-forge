@@ -12,13 +12,29 @@ This repository is the plugin. It does not require a global `devmode` CLI, mode 
 
 ## Install
 
-Install from a plugin source:
+### Add from GitHub (recommended)
+
+Installation is a two-step process: add the marketplace, then install the plugin.
 
 ```bash
-/plugin install devmode@claude-code-marketplace
+# Step 1: add the devmode marketplace
+/plugin marketplace add drmaas/devmode
+
+# Step 2: install the devmode plugin
+/plugin install devmode@drmaas
 ```
 
-For local development, load this repository as a plugin directory.
+### Add from Local Directory (development)
+
+For local development, clone this repository then:
+
+```bash
+# Step 1: add the local marketplace
+/plugin marketplace add ./devmode
+
+# Step 2: install the plugin
+/plugin install devmode@drmaas
+```
 
 ## Workflow Commands
 

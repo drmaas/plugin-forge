@@ -1,0 +1,24 @@
+{
+  "name": "drmaas",
+  "owner": {
+    "name": "drmaas"
+  },
+  "metadata": {
+    "description": "devmode workflow toolkit for Claude Code"
+  },
+  "plugins": [
+    {
+      "name": "devmode",
+      "source": ".",
+      "description": "Skill-first workflow toolkit providing build, tdd, spec, spike, and brainstorm commands with stable builder and reviewer agents.",
+      "version": "2.0.0",
+      "author": {
+        "name": "drmaas"
+      },
+      "homepage": "https://github.com/drmaas/devmode",
+      "repository": "https://github.com/drmaas/devmode",
+      "license": "MIT",
+      "keywords": ["workflow", "agents", "skills", "tdd", "review"]
+    }
+  ]
+}
