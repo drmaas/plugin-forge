@@ -38,6 +38,7 @@ Work in a Ralph Loop:
 - Do not stop at analysis-only checkpoints.
 - If checks fail, fix and continue the loop until pass.
 - Hand off to `devmode-reviewer`, then continue until review feedback is resolved and delivery is complete.
+- If invocation context explicitly sets `loop_mode=no-loop`, run a single pass and hand off without iterative loop behavior.
 
 ## Skill-First Execution Loop
 

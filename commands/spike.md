@@ -1,9 +1,21 @@
 ---
 description: Exploratory implementation workflow for rapid validation of uncertain ideas.
-argument-hint: [task description]
+argument-hint: [--no-loop] [task description]
 ---
 
 Run the devmode `/spike` workflow.
+
+First, parse loop flags and objective from the invocation:
+
+```!
+bash "${CLAUDE_PLUGIN_ROOT}/scripts/parse-loop-args.sh" $ARGUMENTS
+```
+
+Treat parser output as authoritative:
+
+- `loop_mode=loop`: use standard Ralph Loop iteration.
+- `loop_mode=no-loop`: run a single pass and hand off without iterative loop behavior.
+- `task_objective=...`: use this as the objective text (do not treat `--no-loop` as objective content).
 
 Use `devmode-builder` as the implementation owner with this contract:
 
@@ -15,4 +27,4 @@ Use `devmode-builder` as the implementation owner with this contract:
 
 Prefer `devmode-librarian` for discovery and `devmode-coder` for rapid implementation.
 
-If `$ARGUMENTS` is non-empty, treat it as the active task objective.
+If `task_objective` is non-empty, treat it as the active task objective.
