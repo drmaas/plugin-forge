@@ -1,6 +1,6 @@
 ---
 description: Default implementation workflow with lightweight planning and full review handoff.
-argument-hint: [--no-loop] [task description]
+argument-hint: "[--no-loop] [task description]"
 ---
 
 Run the devmode `/build` workflow.

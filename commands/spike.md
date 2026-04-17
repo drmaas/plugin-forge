@@ -1,6 +1,6 @@
 ---
 description: Exploratory implementation workflow for rapid validation of uncertain ideas.
-argument-hint: [--no-loop] [task description]
+argument-hint: "[--no-loop] [task description]"
 ---
 
 Run the devmode `/spike` workflow.

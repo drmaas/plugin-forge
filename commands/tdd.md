@@ -1,6 +1,6 @@
 ---
 description: Tests-first implementation workflow with strict red-green-refactor discipline.
-argument-hint: [--no-loop] [task description]
+argument-hint: "[--no-loop] [task description]"
 ---
 
 Run the devmode `/tdd` workflow.

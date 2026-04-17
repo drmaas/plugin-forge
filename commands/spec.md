@@ -1,6 +1,6 @@
 ---
 description: Spec-driven workflow for requirements, phased tasks, traceable implementation, and review.
-argument-hint: [--no-loop] [task description]
+argument-hint: "[--no-loop] [task description]"
 ---
 
 Run the devmode `/spec` workflow.
